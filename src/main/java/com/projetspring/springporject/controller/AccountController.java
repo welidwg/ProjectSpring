@@ -20,7 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @NoArgsConstructor
@@ -31,7 +33,6 @@ public class AccountController {
 
     @Autowired
     ServiceAccount serviceAccount;
-
     @PostMapping(value = "/addUser", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> addUser(@RequestPart(value = "data") @Valid AppUser user, BindingResult bindingResult, @RequestPart(value = "photo", required = false) MultipartFile mf) throws IOException {
         if (!bindingResult.hasErrors()) {
@@ -76,6 +77,12 @@ public class AccountController {
     @GetMapping("/account/{username}")
     public AppUser getUser(@PathVariable String username) {
         return serviceAccount.getAppuser(username);
+    }
+    @GetMapping("/account/role/{role}")
+    public List<AppUser> getUserByRole(@PathVariable String role) {
+        Set<AppRole> list = new HashSet<>();
+        list.add(new AppRole(role));
+        return serviceAccount.getAllUsersByRole(list);
     }
 
     @DeleteMapping("/account/{id}/delete")

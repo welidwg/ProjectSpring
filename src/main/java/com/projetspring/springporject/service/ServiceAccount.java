@@ -7,10 +7,7 @@ import com.projetspring.springporject.repository.TaskAssignmentRepository;
 import com.projetspring.springporject.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -126,6 +124,11 @@ public class ServiceAccount implements IServiceAccount {
     @Override
     public List<AppUser> getAllAppUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public List<AppUser> getAllUsersByRole(Set<AppRole> roles) {
+        return userRepository.findAppUserByRolesIn(roles);
     }
 
     @Override

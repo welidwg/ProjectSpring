@@ -22,7 +22,7 @@ import org.springframework.web.filter.CorsFilter;
 @EnableWebSecurity
 @AllArgsConstructor
 public class SecurityConfig {
-    @Lazy
+
     UserDetailsService userDetailsService;
 
     @Bean

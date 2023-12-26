@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 public interface IServiceAccount {
     public void addUser(AppUser user, MultipartFile mf) throws IOException;
@@ -21,6 +22,9 @@ public interface IServiceAccount {
     public AppUser getAppuser(String username);
     public List<AppRole> getAllRoles();
     public List<AppUser> getAllAppUsers();
+    public List<AppUser> getAllUsersByRole(Set<AppRole> roles);
+
+
     public AppUser getAppUserById(String id);
     public List<AppUser> getAppUserByMC(String mc);
     public Page<AppUser> getAppUserByMC(String mc, Pageable p);
