@@ -9,6 +9,7 @@ public interface IServiceStatus {
     public void saveStatus(Status s);
     public List<Status> getStatuses();
     public Status getStatusById(Long id);
+    public Status getStatusByLabel(String label);
 
     public void deleteStatus(Long id);
 
