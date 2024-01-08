@@ -16,10 +16,6 @@ public class Controller {
     @Autowired
     Pusher pusher;
 
-    @GetMapping("/user/index")
-    public String index(){
-        return "hello";
-    }
 
     @GetMapping("/errorPage")
     public String errorPage(){

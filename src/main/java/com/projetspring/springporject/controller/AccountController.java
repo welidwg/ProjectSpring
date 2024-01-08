@@ -33,7 +33,7 @@ public class AccountController {
 
     @Autowired
     ServiceAccount serviceAccount;
-    @PostMapping(value = "/addUser", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/admin/addUser", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> addUser(@RequestPart(value = "data") @Valid AppUser user, BindingResult bindingResult, @RequestPart(value = "photo", required = false) MultipartFile mf) throws IOException {
         if (!bindingResult.hasErrors()) {
             serviceAccount.addUser(user, mf);
@@ -48,44 +48,44 @@ public class AccountController {
         }
     }
 
-    @PostMapping("/addRole")
+    @PostMapping("/admin/addRole")
     public String addRole(@RequestBody AppRole role) {
         serviceAccount.addRole(role.getRole());
         return "done";
     }
 
-    @PutMapping("/account/edit")
+    @PutMapping("/user/account/edit")
     public ResponseEntity<?> editUser(@RequestPart(value = "data") AppUser user, @RequestPart(value = "photo", required = false) MultipartFile mf) throws IOException {
         serviceAccount.editUser(user, mf);
         return ResponseEntity.status(201).body(user);
     }
 
-    @GetMapping("/account/getAll")
+    @GetMapping("/admin/account/getAll")
     public Page<AppUser> getAll(@RequestParam(defaultValue = "") String mc, @RequestParam(name = "page", defaultValue = "0") int page,
                                 @RequestParam(name = "size", defaultValue = "3") int size) {
         return serviceAccount.getAppUserByMC(mc, PageRequest.of(page,size));
     }
-    @GetMapping("/account/all")
+    @GetMapping("/admin/account/all")
     public List<AppUser> getAllNoPaginate(@RequestParam(defaultValue = "") String mc) {
         return serviceAccount.getAppUserByMC(mc);
     }
-    @GetMapping("/roles/getAll")
+    @GetMapping("/admin/roles/getAll")
     public List<AppRole> getAllRoles() {
         return serviceAccount.getAllRoles();
     }
 
-    @GetMapping("/account/{username}")
+    @GetMapping("/user/account/{username}")
     public AppUser getUser(@PathVariable String username) {
         return serviceAccount.getAppuser(username);
     }
-    @GetMapping("/account/role/{role}")
+    @GetMapping("/admin/account/role/{role}")
     public List<AppUser> getUserByRole(@PathVariable String role) {
         Set<AppRole> list = new HashSet<>();
         list.add(new AppRole(role));
         return serviceAccount.getAllUsersByRole(list);
     }
 
-    @DeleteMapping("/account/{id}/delete")
+    @DeleteMapping("/admin/account/{id}/delete")
     public String deleteUser(@PathVariable String id) {
         serviceAccount.deleteUser(id);
         return "done";

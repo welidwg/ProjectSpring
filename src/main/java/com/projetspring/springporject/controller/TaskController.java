@@ -35,7 +35,7 @@ public class TaskController {
     @Autowired
     ServiceAccount serviceAccount;
 
-    @PostMapping("/task/add")
+    @PostMapping("/admin/task/add")
     public ResponseEntity<?> addTask(@RequestBody @Valid Task t, BindingResult bindingResult){
         if(!bindingResult.hasErrors()){
             serviceTask.saveTask(t);
@@ -52,35 +52,25 @@ public class TaskController {
         }
 
     }
-    @GetMapping("/task/getAll")
+    @GetMapping("/admin/task/getAll")
     public Page<Task> getAll(@RequestParam(defaultValue = "") String mc, @RequestParam(name = "page", defaultValue = "0") int page,
                              @RequestParam(name = "size", defaultValue = "3") int size){
         return serviceTask.getTaskByMC(mc, PageRequest.of(page,size));
     }
-    @GetMapping("/task/all")
+    @GetMapping("/admin/task/all")
     public List<Task> getAllNoPaginate(@RequestParam(defaultValue = "") String mc){
         return serviceTask.getTaskByMC(mc);
     }
-    @DeleteMapping("/task/delete/{id}")
+    @DeleteMapping("/admin/task/delete/{id}")
     public String delete(@PathVariable Long id){
         serviceTask.deleteTask(id);
         return "done";
     }
-    @PostMapping("/task/edit")
+    @PostMapping("/admin/task/edit")
     public String editTask(@RequestBody Task t){
         serviceTask.saveTask(t);
         return "done";
 
     }
-//    @PostMapping("/task/affect")
-//    public String addTaskToUser(@RequestBody Task t){
-//         t.getUsers().forEach(user->serviceTask.addTaskToUser(user.getId(),t.getId()));
-//        return t.getUsers().toString();
-//    }
 
-//    @PutMapping("/task/status/{idTask}")
-//    public String updateStatus(@RequestBody Status status,@PathVariable Long idTask){
-//        serviceTask.UpdateStatus(status.getId(),idTask);
-//        return "done";
-//    }
 }

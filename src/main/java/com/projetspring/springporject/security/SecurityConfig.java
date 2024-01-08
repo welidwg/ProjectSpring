@@ -32,7 +32,7 @@ public class SecurityConfig {
             response.getWriter().println("success");
         }).failureHandler((request, response, exception) -> {
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            response.getWriter().println("error dff");
+            response.getWriter().println("error");
         }).permitAll());
         httpSecurity.authorizeHttpRequests(authorize -> authorize.requestMatchers("/admin/**").hasAuthority("ADMIN"));
         httpSecurity.authorizeHttpRequests(authorize -> authorize.requestMatchers("/user/**").hasAuthority("USER"));
@@ -40,7 +40,6 @@ public class SecurityConfig {
         httpSecurity.exceptionHandling(exception -> exception.accessDeniedPage("/errorPage"));
         httpSecurity.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable()).authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated());
         httpSecurity.userDetailsService(userDetailsService);
-
         httpSecurity.httpBasic(Customizer.withDefaults());
         return httpSecurity.build();
     }

@@ -17,12 +17,12 @@ public class StatusController {
     @Autowired
     ServiceStatus serviceStatus;
 
-    @PostMapping("/status/add")
+    @PostMapping("/admin/status/add")
     public String addStatus(@RequestBody Status status){
         serviceStatus.saveStatus(status);
         return "done";
     }
-    @GetMapping("/status/getAll")
+    @GetMapping("/admin/status/getAll")
     public List<Status> getAll(){
         return serviceStatus.getStatuses();
     }
@@ -32,7 +32,7 @@ public class StatusController {
         return serviceStatus.getStatusByLabel(mc);
     }
 
-    @DeleteMapping("/status/{id}/delete")
+    @DeleteMapping("/admin/status/{id}/delete")
     public String deleteStatus(@PathVariable Long id){
         serviceStatus.deleteStatus(id);
         return "done";
