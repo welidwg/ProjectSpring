@@ -55,9 +55,9 @@ public class AccountController {
     }
 
     @PutMapping("/account/edit")
-    public String editUser(@RequestPart(value = "data") AppUser user, @RequestPart(value = "photo", required = false) MultipartFile mf) throws IOException {
+    public ResponseEntity<?> editUser(@RequestPart(value = "data") AppUser user, @RequestPart(value = "photo", required = false) MultipartFile mf) throws IOException {
         serviceAccount.editUser(user, mf);
-        return "done";
+        return ResponseEntity.status(201).body(user);
     }
 
     @GetMapping("/account/getAll")

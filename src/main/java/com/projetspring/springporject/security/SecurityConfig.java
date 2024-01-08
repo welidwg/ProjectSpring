@@ -32,7 +32,7 @@ public class SecurityConfig {
             response.getWriter().println("success");
         }).failureHandler((request, response, exception) -> {
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            response.getWriter().println("error");
+            response.getWriter().println("error dff");
         }).permitAll());
         httpSecurity.authorizeHttpRequests(authorize -> authorize.requestMatchers("/admin/**").hasAuthority("ADMIN"));
         httpSecurity.authorizeHttpRequests(authorize -> authorize.requestMatchers("/user/**").hasAuthority("USER"));
