@@ -54,7 +54,7 @@ public class TaskController {
     }
     @GetMapping("/admin/task/getAll")
     public Page<Task> getAll(@RequestParam(defaultValue = "") String mc, @RequestParam(name = "page", defaultValue = "0") int page,
-                             @RequestParam(name = "size", defaultValue = "3") int size){
+                             @RequestParam(name = "size", defaultValue = "5") int size){
         return serviceTask.getTaskByMC(mc, PageRequest.of(page,size));
     }
     @GetMapping("/admin/task/all")

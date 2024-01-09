@@ -63,7 +63,7 @@ public class AccountController {
 
     @GetMapping("/admin/account/getAll")
     public Page<AppUser> getAll(@RequestParam(defaultValue = "") String mc, @RequestParam(name = "page", defaultValue = "0") int page,
-                                @RequestParam(name = "size", defaultValue = "3") int size) {
+                                @RequestParam(name = "size", defaultValue = "5") int size) {
         return serviceAccount.getAppUserByMC(mc, PageRequest.of(page,size));
     }
     @GetMapping("/admin/account/all")

@@ -76,7 +76,7 @@ public class ServiceAssignment implements IServiceAssignment {
             }else if (status.getLabel().equals("Waiting")){
                 assignment.setFinishedDate(null);
             }
-            pusher.trigger("notif-admin","notif-event-admin",assignment.getUser().getUsername()+" has updated his task "+assignment.getTask().getTitle()+" status : "+status.getLabel());
+            pusher.trigger("notif-admin","notif-event-admin",assignment.getUser().getUsername()+" has updated his task "+assignment.getTask().getTitle()+"\n\n status : "+status.getLabel());
 
             //System.out.println("status id : " + assignment.getStatus().getLabel());
         }
