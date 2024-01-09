@@ -5,6 +5,7 @@ import com.projetspring.springporject.entity.AppUser;
 import com.projetspring.springporject.repository.RoleRepository;
 import com.projetspring.springporject.repository.TaskAssignmentRepository;
 import com.projetspring.springporject.repository.UserRepository;
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ public class ServiceAccount implements IServiceAccount {
     @Autowired
     private TaskAssignmentRepository serviceAssignment;
 
+    @Autowired
+    private EmailService emailService;
+
     private String saveImage(MultipartFile mf) throws IOException {
         String nom= mf.getOriginalFilename();
         String tab[]=nom.split("\\.");
@@ -46,14 +50,26 @@ public class ServiceAccount implements IServiceAccount {
         return newNAme;
     }
     @Override
-    public void addUser(AppUser user,MultipartFile mf) throws IOException {
+    public void addUser(AppUser user,MultipartFile mf) throws IOException, MessagingException {
         AppUser appUser=userRepository.findAppUserByUsername(user.getUsername());
         if (appUser != null)
             throw new RuntimeException("User does exist");
-       AppUser created = userRepository.save(AppUser.builder().id(UUID.randomUUID().toString()).username(user.getUsername()).email(user.getEmail()).password(passwordEncoder.encode(user.getPassword())).roles(user.getRoles()).build());
+       AppUser created = userRepository.save(AppUser.builder().
+               id(UUID.randomUUID().toString())
+               .username(user.getUsername())
+               .email(user.getEmail())
+               .password(passwordEncoder.encode(user.getPassword()))
+               .roles(user.getRoles()).build());
         if(mf !=null && !mf.isEmpty()){
             created.setAvatar(saveImage(mf));
         }
+        emailService.sendEmail(user.getEmail(), "Account created in TaskManager", "Hello  <strong>"+user.getUsername()+"</strong> <br/> " +
+                "An administrator have successfully created an account for you in the web platform <strong>Task Manager</strong> <br/> " +
+                "Your login credentials are : <br/><br/>" +
+                "<strong>Username :</strong> "+user.getUsername()+"<br/>" +
+                "<strong>Password :</strong> "+user.getPassword());
+
+
     }
 
     @Override

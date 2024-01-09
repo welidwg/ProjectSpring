@@ -2,6 +2,7 @@ package com.projetspring.springporject.service;
 
 import com.projetspring.springporject.entity.AppRole;
 import com.projetspring.springporject.entity.AppUser;
+import jakarta.mail.MessagingException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface IServiceAccount {
-    public void addUser(AppUser user, MultipartFile mf) throws IOException;
+    public void addUser(AppUser user, MultipartFile mf) throws IOException, MessagingException;
     public void editUser(AppUser user,MultipartFile mf) throws IOException;
     public  void addRole(String nom);
     public void addRoleToUser(String username,String nameRole);

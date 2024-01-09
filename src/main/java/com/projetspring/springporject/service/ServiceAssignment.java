@@ -7,12 +7,15 @@ import com.projetspring.springporject.entity.TaskAssignment;
 import com.projetspring.springporject.repository.TaskAssignmentRepository;
 import com.projetspring.springporject.repository.TaskRepository;
 import com.pusher.rest.Pusher;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -32,13 +35,15 @@ public class ServiceAssignment implements IServiceAssignment {
     private ServiceStatus serviceStatus;
     @Autowired
     Pusher pusher;
-
+    @Autowired
+    private EmailService emailService;
 
 
     @Override
-    public void addTaskToUser(String id, Long taskID, Date dueDate, Date assignDate, Long status_id) {
+    public void addTaskToUser(String id, Long taskID, Date dueDate, Date assignDate, Long status_id) throws MessagingException {
         Task task = serviceTask.getTaskById(taskID);
         AppUser user = serviceAccount.getAppUserById(id);
+
         boolean check = existByTaskAndUser(task, user);
         Status status = serviceStatus.getStatusById(status_id);
         if (check)
@@ -46,6 +51,13 @@ public class ServiceAssignment implements IServiceAssignment {
         if (user != null && task != null && !check){
             assignmentRepository.save(TaskAssignment.builder().user(user).task(task).id(UUID.randomUUID().toString()).dueDate(dueDate).assignemntDate(assignDate).status(status).build());
             pusher.trigger("notif-"+user.getId(),"notif-event","You have a new task! ' "+task.getTitle()+" '");
+
+            emailService.sendEmail(user.getEmail(), "New task assignment", "Hello <strong>"+user.getUsername()+"</strong>. <br/>" +
+                    "An administrator have assigned a Task for you :<br/><br/>" +
+                    "<strong>Task :</strong>"+task.getTitle()+".<br/>" +
+                    "<strong>Description :</strong> "+task.getDescription()+".<br/><br/>" +
+                    "Visit the platform for more details."
+                   );
 
         }
 

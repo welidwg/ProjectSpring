@@ -4,6 +4,7 @@ import com.projetspring.springporject.entity.AppRole;
 import com.projetspring.springporject.entity.AppUser;
 import com.projetspring.springporject.request.AppUserRequest;
 import com.projetspring.springporject.service.ServiceAccount;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -34,7 +35,7 @@ public class AccountController {
     @Autowired
     ServiceAccount serviceAccount;
     @PostMapping(value = "/admin/addUser", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> addUser(@RequestPart(value = "data") @Valid AppUser user, BindingResult bindingResult, @RequestPart(value = "photo", required = false) MultipartFile mf) throws IOException {
+    public ResponseEntity<?> addUser(@RequestPart(value = "data") @Valid AppUser user, BindingResult bindingResult, @RequestPart(value = "photo", required = false) MultipartFile mf) throws IOException, MessagingException {
         if (!bindingResult.hasErrors()) {
             serviceAccount.addUser(user, mf);
             return new ResponseEntity<>(serviceAccount.getAllAppUsers(), HttpStatus.OK);

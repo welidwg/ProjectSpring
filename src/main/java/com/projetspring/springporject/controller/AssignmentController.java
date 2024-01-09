@@ -7,6 +7,7 @@ import com.projetspring.springporject.service.ServiceAccount;
 import com.projetspring.springporject.service.ServiceAssignment;
 
 import com.pusher.rest.Pusher;
+import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class AssignmentController {
     Pusher pusher;
 
     @PostMapping("/admin/task/assign")
-    public String taskAssign(@RequestBody TaskAssignment taskAssignment) {
+    public String taskAssign(@RequestBody TaskAssignment taskAssignment) throws MessagingException {
         serviceAssignment.addTaskToUser(taskAssignment.getUser().getId(), taskAssignment.getTask().getId(), taskAssignment.getDueDate(), taskAssignment.getAssignemntDate(), taskAssignment.getStatus().getId());
         return "done";
     }
